@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://tree-graph-algorithm-visualizer.vercel.app/sitemap.xml
+

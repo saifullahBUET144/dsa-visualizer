@@ -1,6 +1,15 @@
 {
     "rewrites": [
       { "source": "/(.*)", "destination": "/index.html" }
+    ],
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "all" },
+          { "key": "Cache-Control", "value": "public, max-age=3600" }
+        ]
+      }
     ]
   }
  
