@@ -480,8 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener(useHashRouting ? 'hashchange' : 'popstate', () => {
         applyRoute(getCurrentRoutePath());
     });
-    // On initial load, apply current route
-    applyRoute(getCurrentRoutePath());
+    // On initial load, apply current route (moved below after card handlers are registered)
 
 
     cards.forEach(card => {
@@ -597,6 +596,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // After registering card click handlers, apply current route so deep links land on the correct tab
+    applyRoute(getCurrentRoutePath());
 
     backBtn.addEventListener('click', () => {
         visualizerPage.classList.add('hidden');
