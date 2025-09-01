@@ -236,137 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    // --- Animated Background ---
-    const bgCanvas = document.getElementById('background-canvas');
-    const ctx = bgCanvas.getContext('2d');
-    let rootBranches = [];
-    const MAX_DEPTH = 4;
-    const NUM_ROOTS = 8;
-
-    function resizeBgCanvas() {
-        bgCanvas.width = window.innerWidth;
-        bgCanvas.height = window.innerHeight;
-    }
-    resizeBgCanvas();
-    window.addEventListener('resize', () => {
-        resizeBgCanvas();
-        rootBranches = []; // Reset on resize
-    });
-
-    class VBranch {
-        constructor(x, startY, endY, depth, slotWidth) {
-            this.x = x;
-            this.startY = startY;
-            this.endY = endY;
-            this.currentY = startY;
-            this.depth = depth;
-            this.slotWidth = slotWidth;
-            this.speed = Math.random() * 0.5 + 0.5;
-            this.state = 'descending'; // descending, branching, done
-            this.h_progress = 0;
-            this.h_len = this.slotWidth / 4;
-            this.children = [];
-        }
-        update() {
-            if (this.state === 'descending') {
-                if (this.currentY < this.endY) {
-                    this.currentY += this.speed;
-                } else {
-                    this.currentY = this.endY;
-                    this.state = 'branching';
-                    if (this.depth < MAX_DEPTH) {
-                        this.createChildren();
-                    }
-                }
-            } else if (this.state === 'branching') {
-                if (this.h_progress < this.h_len) {
-                    this.h_progress += this.speed;
-                } else {
-                    this.h_progress = this.h_len;
-                    this.state = 'done';
-                }
-            }
-            this.children.forEach(child => child.update());
-        }
-        createChildren() {
-            const childSlotWidth = this.slotWidth / 2;
-            const v_gap = 10;
-            const childStartY = this.endY + v_gap;
-            let nextLevelHeight = (bgCanvas.height / (MAX_DEPTH + 2));
-            let childEndY = childStartY + nextLevelHeight * (Math.random() * 0.5 + 0.5);
-            
-            if (this.depth + 1 >= MAX_DEPTH) {
-                childEndY = bgCanvas.height + 50; // Extend beyond the screen
-            }
-
-            const leftChildX = this.x - this.h_len;
-            const rightChildX = this.x + this.h_len;
-            this.children.push(new VBranch(leftChildX, childStartY, childEndY, this.depth + 1, childSlotWidth));
-            this.children.push(new VBranch(rightChildX, childStartY, childEndY, this.depth + 1, childSlotWidth));
-        }
-        draw(context) {
-            context.strokeStyle = `hsla(195, 100%, 50%, ${0.03 + (this.depth / MAX_DEPTH) * 0.15})`;
-            context.lineWidth = 1;
-            context.beginPath();
-            context.moveTo(this.x, this.startY);
-            context.lineTo(this.x, this.currentY);
-            context.stroke();
-            if (this.state === 'branching' || this.state === 'done') {
-                context.beginPath();
-                context.moveTo(this.x, this.endY);
-                context.lineTo(this.x - this.h_progress, this.endY);
-                context.stroke();
-                context.beginPath();
-                context.moveTo(this.x, this.endY);
-                context.lineTo(this.x + this.h_progress, this.endY);
-                context.stroke();
-                 if (this.state === 'done' && this.children.length > 0) {
-                    context.beginPath();
-                    context.moveTo(this.x - this.h_len, this.endY);
-                    context.lineTo(this.x - this.h_len, this.children[0].startY);
-                    context.stroke();
-                    context.beginPath();
-                    context.moveTo(this.x + this.h_len, this.endY);
-                    context.lineTo(this.x + this.h_len, this.children[1].startY);
-                    context.stroke();
-                }
-            }
-            this.children.forEach(child => child.draw(context));
-        }
-    }
-
-    function animateBackground() {
-        ctx.fillStyle = 'rgba(9, 10, 15, 0.1)';
-        ctx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
-        if (rootBranches.length < NUM_ROOTS && Math.random() < 0.05) {
-            const slotWidth = bgCanvas.width / NUM_ROOTS;
-            const slotIndex = Math.floor(Math.random() * NUM_ROOTS);
-            const x = slotWidth * slotIndex + slotWidth / 2;
-            const isSlotOccupied = rootBranches.some(b => Math.abs(b.x - x) < 1);
-            if (!isSlotOccupied) {
-                const startY = -20;
-                const endY = Math.random() * (bgCanvas.height / (MAX_DEPTH + 1)) * 0.8 + 20;
-                rootBranches.push(new VBranch(x, startY, endY, 0, slotWidth));
-            }
-        }
-        rootBranches = rootBranches.filter(b => {
-            let lowestY = b.startY;
-            function findLowestY(branch) {
-                lowestY = Math.max(lowestY, branch.currentY);
-                branch.children.forEach(findLowestY);
-            }
-            findLowestY(b);
-            return lowestY < bgCanvas.height + 50;
-        });
-        rootBranches.forEach(b => {
-            b.update();
-            b.draw(ctx);
-        });
-        requestAnimationFrame(animateBackground);
-    }
-    animateBackground();
-
-
     // --- Page Navigation ---
     hamburgerBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1148,21 +1017,21 @@ document.addEventListener('DOMContentLoaded', () => {
         while (left <= right) {
             steps++;
             drawArrayGrid(array, { leftIndex: left, rightIndex: right });
-            await sleep(1000);
+            await sleep(1500);
             showAlgoModal(`The left position is <strong>${left}</strong> and the right position is <strong>${right}</strong>, so we check the middle position: <strong>${Math.floor((left + right) / 2)}</strong>.`);
-            await sleep(1000);
+            await sleep(1500);
             hideAlgoModal();
             
             const mid = Math.floor((left + right) / 2);
             drawArrayGrid(array, { midIndex: mid });
-            await sleep(1000);
+            await sleep(1500);
             
             if (array[mid] === target) {
                 showAlgoModal(`Found it! <strong>${array[mid]}</strong> equals the target <strong>${target}</strong>.`);
-                await sleep(1000);
+                await sleep(1500);
                 hideAlgoModal();
                 drawArrayGrid(array, { keepRange: [mid, mid] });
-                await sleep(1000);
+                await sleep(1500);
                 showAlgoModal(`Completed in <strong>${steps}</strong> steps (≤ ⌈log₂(${array.length})⌉). Position: <strong>${mid}</strong>.`, { showOk: true });
                 await new Promise(resolve => {
                     const okBtn = document.getElementById('algo-step-modal-ok');
@@ -1173,17 +1042,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             } else if (array[mid] < target) {
                 showAlgoModal(`<strong>${array[mid]}</strong> is smaller than target <strong>${target}</strong>. Discard left half.`);
-                await sleep(1000);
+                await sleep(1500);
                 hideAlgoModal();
                 drawArrayGrid(array, { discardRange: [left, mid], keepRange: [mid + 1, right] });
-                await sleep(1000);
+                await sleep(1500);
                 left = mid + 1;
             } else {
                 showAlgoModal(`<strong>${array[mid]}</strong> is greater than target <strong>${target}</strong>. Discard right half.`);
-                await sleep(1000);
+                await sleep(1500);
                 hideAlgoModal();
                 drawArrayGrid(array, { discardRange: [mid, right], keepRange: [left, mid - 1] });
-                await sleep(1000);
+                await sleep(1500);
                 right = mid - 1;
             }
         }
