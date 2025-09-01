@@ -1,0 +1,231 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #090a0f; /* Fallback background */
+    color: #e2e8f0; /* slate-200 */
+}
+
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Panel Style */
+.glass-panel {
+    background: rgba(15, 23, 42, 0.7); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+.subtitle-glow {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Modal Animation */
+#about-modal, #ds-info-modal {
+    transition: opacity 300ms ease-out;
+}
+#about-modal .glass-panel, #ds-info-modal .glass-panel {
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+}
+#about-modal.show, #ds-info-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+#about-modal.show .glass-panel, #ds-info-modal.show .glass-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Algorithm modal fade + float-in */
+#algo-step-modal { display: none; }
+#algo-step-modal.show { display: flex; }
+#algo-step-modal .glass-panel {
+    animation: algo-float-in 300ms ease-out;
+}
+#search-modal { display: none; }
+#search-modal.show { display: flex; }
+#search-results .result-item { cursor: pointer; }
+#search-results .result-item:hover { background: rgba(148, 163, 184, 0.1); }
+@keyframes algo-float-in {
+    from { opacity: 0; transform: translateY(20px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* Custom styles for the visualization canvas */
+#canvas-container {
+    cursor: grab;
+}
+#canvas-container.panning {
+    cursor: grabbing;
+}
+
+/* Responsive height for canvas */
+@media (max-width: 1023px) { 
+    #visualizer-page main {
+        overflow-y: auto !important; 
+    }
+
+    #canvas-container {
+        min-height: 75vh;
+    }
+}
+
+
+/* Custom styles for the visualization */
+.node {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.6));
+}
+.node:hover > circle {
+    fill: #1e293b; /* slate-800 */
+}
+.node circle {
+    stroke-width: 2;
+    stroke: #6366f1; /* Indigo-500 */
+}
+/* Style for Trie nodes that are end-of-word */
+.node.is-end-of-word circle {
+    stroke: #22c55e; /* green-500 */
+    filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.7));
+}
+.node text {
+    font-size: 1rem;
+    font-weight: 600;
+    pointer-events: none;
+    fill: #f1f5f9; /* slate-100 */
+}
+.edge {
+    stroke: #475569; /* slate-600 */
+    stroke-width: 2;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Disable transitions during node dragging for responsiveness */
+#canvas-container.dragging .node,
+#canvas-container.dragging .edge {
+    transition: none !important;
+}
+
+/* Graph edge arrow styling */
+.edge polygon {
+    stroke: #475569;
+    stroke-width: 1;
+}
+/* Styles for the interactive buttons */
+.action-btn {
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+.node:hover .action-btn {
+    opacity: 1;
+}
+.action-btn circle {
+    stroke-width: 1.5;
+}
+.action-btn text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    pointer-events: none;
+}
+/* button specific styles */
+.add-btn circle {
+    fill: #334155; 
+    stroke: #22c55e; 
+}
+.add-btn:hover circle {
+    fill: #22c55e;
+}
+.add-btn text {
+    fill: #f1f5f9;
+}
+/* Delete button specific styles */
+.delete-btn circle {
+    fill: #334155; 
+    stroke: #ef4444; 
+}
+.delete-btn:hover circle {
+    fill: #ef4444;
+}
+.delete-btn text {
+    fill: #f1f5f9;
+    font-size: 1.5rem;
+    transform: translateY(-1px);
+}
+
+/* Array grid cells (algorithms) */
+.array-cell {
+    transition: transform 0.6s ease, opacity 0.6s ease;
+}
+.array-cell text {
+    fill: #f1f5f9;
+    font-weight: 600;
+}
+
+/* Traversal output row */
+.traversal-output .array-cell rect {
+    fill: #0b1220;
+}
+
+/* Wrap traversal output for small screens */
+@media (max-width: 640px) {
+  svg .traversal-output-row {
+      display: none;
+  }
+}
+
+/* Index circle label color */
+.array-index-label text {
+    fill: #f1f5f9;
+    font-weight: 700;
+}
+
+/* Card hover effect */
+.card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 10px 25px -3px rgba(30, 178, 221, 0.2), 0 4px 15px -2px rgba(99, 102, 241, 0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1e293b; /* slate-800 */
+}
+::-webkit-scrollbar-thumb {
+    background: #4f46e5; /* indigo-600 */
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #6366f1; /* indigo-500 */
+}
+/* Code block styling */
+pre code {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+

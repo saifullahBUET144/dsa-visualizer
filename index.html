@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structure Visualizer</title>
+
+    <!-- Standard favicon sizes -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
+
+    <!-- Apple touch icons (for iOS homescreen) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/apple-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./images/apple-icon-114x114.png">
+
+    <!-- Android icon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="./images/android-icon-192x192.png">
+
+    <!-- Manifest and theme color (optional but good for PWA) -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+    <canvas id="background-canvas"></canvas>
+
+    <div id="app-container" class="min-h-screen">
+
+        <!-- Home Page -->
+        <div id="home-page">
+            <nav class="glass-panel py-4 px-6 flex items-center sticky top-0 z-50">
+                <div class="flex-1 flex items-center">
+                     <h1 class="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent flex items-center gap-3">
+                        <svg class="w-7 h-7 text-cyan-400 hidden sm:block" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9 1H1V9H9V6H11V20H15V23H23V15H15V18H13V6H15V9H23V1H15V4H9V1ZM21 3H17V7H21V3ZM17 17H21V21H17V17Z"></path> </g></svg>
+                        <span>Data Structure Visualizer</span>
+                    </h1>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden sm:flex flex-1 justify-end items-center space-x-6 pr-4">
+                    <button id="home-search-btn" class="text-slate-300 hover:text-cyan-400 transition text-lg"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button id="home-about-btn" class="text-slate-300 hover:text-cyan-400 transition text-lg">About</button>
+                    <button id="nav-ds-btn" class="text-slate-300 hover:text-cyan-400 transition text-lg">DS</button>
+                    <button id="nav-algo-btn" class="text-slate-300 hover:text-cyan-400 transition text-lg">Algo</button>
+                    <a href="https://github.com/saifullahBUET144" target="_blank" class="text-slate-300 hover:text-cyan-400 transition"><i class="fab fa-github fa-xl"></i></a>
+                </div>
+                
+                <!-- Mobile Nav -->
+                <div class="sm:hidden flex-1 flex justify-end">
+                    <button id="hamburger-btn" class="text-slate-300 hover:text-cyan-400 transition">
+                        <i class="fas fa-bars fa-lg"></i>
+                    </button>
+                </div>
+                 <div id="mobile-menu" class="hidden sm:hidden absolute top-full right-0 mt-2 w-56 bg-slate-900 rounded-lg shadow-lg p-2 border border-slate-700 z-50">
+                    <button id="mobile-search-btn" class="w-full text-left text-slate-300 hover:bg-slate-700/50 hover:text-cyan-400 transition rounded px-3 py-2 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                    <button id="mobile-about-btn" class="w-full text-left text-slate-300 hover:bg-slate-700/50 hover:text-cyan-400 transition rounded px-3 py-2">About</button>
+                    <button id="mobile-ds-btn" class="w-full text-left text-slate-300 hover:bg-slate-700/50 hover:text-cyan-400 transition rounded px-3 py-2">Data Structures</button>
+                    <button id="mobile-algo-btn" class="w-full text-left text-slate-300 hover:bg-slate-700/50 hover:text-cyan-400 transition rounded px-3 py-2">Algorithms</button>
+                    <a href="https://github.com/saifullahBUET144" target="_blank" class="block text-slate-300 hover:bg-slate-700/50 hover:text-cyan-400 transition rounded px-3 py-2">GitHub</a>
+                    <a href="https://www.linkedin.com/in/saifullah-bin-yusuf-3647b71a4/" target="_blank" class="block text-slate-300 hover:bg-slate-700/50 hover:text-cyan-400 transition rounded px-3 py-2">LinkedIn</a>
+                </div>
+            </nav>
+
+            <header class="container mx-auto px-6 py-12 sm:py-16 text-center">
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-2 floating">
+                    Visualize Data Structures
+                </h1>
+                <p class="text-lg sm:text-xl md:text-2xl text-slate-300 mt-4 max-w-3xl mx-auto font-bold subtitle-glow">
+                    An interactive way to understand complex data structures. Choose one to get started.
+                </p>
+            </header>
+
+            <main class="container mx-auto px-6 pb-16">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Binary Tree Card -->
+                    <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="BT">
+                        <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                            <img src="./images/binary_tree.png" alt="Binary Tree Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=Binary+Tree';">
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-code-branch text-cyan-400"></i>Binary Tree</h2>
+                            <p class="text-slate-400 mt-2">A tree where each node has at most two children.</p>
+                        </div>
+                    </div>
+
+                    <!-- Binary Search Tree Card -->
+                    <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="BST">
+                        <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                             <img src="./images/binary_search_tree.png" alt="Binary Search Tree Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=Binary+Search+Tree';">
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-code-fork text-cyan-400"></i>Binary Search Tree</h2>
+                            <p class="text-slate-400 mt-2">A sorted binary tree for fast data operations.</p>
+                        </div>
+                    </div>
+
+                    <!-- Trie Card -->
+                    <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="TRIE">
+                        <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                             <img src="./images/trie.png" alt="Trie Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=Trie';">
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-arrow-down-a-z text-cyan-400"></i>Trie</h2>
+                            <p class="text-slate-400 mt-2">An efficient tree for storing and retrieving strings.</p>
+                        </div>
+                    </div>
+
+                    <!-- M-ary Tree Card -->
+                    <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="MARY">
+                        <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                            <img src="./images/mary_tree.png" alt="M-ary Tree Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=M-ary+Tree';">
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-sitemap text-cyan-400"></i>M-ary Tree</h2>
+                            <p class="text-slate-400 mt-2">A tree where each node can have up to M children.</p>
+                        </div>
+                    </div>
+
+                    <!-- Graph Card -->
+                    <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="GRAPH">
+                        <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                            <img src="./images/graph.png" alt="Graph Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=Graph';">
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-project-diagram text-cyan-400"></i>Graph</h2>
+                            <p class="text-slate-400 mt-2">A collection of nodes connected by edges.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Algorithms Section -->
+                <section class="mt-16">
+                    <header class="text-center mb-8">
+                        <h2 class="text-3xl sm:text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent floating">Visualize Algorithms</h2>
+                        <p class="text-lg sm:text-xl md:text-2xl text-slate-300 mt-3 font-bold subtitle-glow">An interactive way to understand algorithms. Choose one to get started.</p>
+                    </header>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Binary Search Card -->
+                        <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="ALG" data-alg="BINARY_SEARCH">
+                            <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                                <img src="./images/binary_search.png" alt="Binary Search Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=Binary+Search';">
+                            </div>
+                            <div class="p-6">
+                                <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-magnifying-glass text-cyan-400"></i>Binary Search</h2>
+                                <p class="text-slate-400 mt-2">Animated step-by-step search on a sorted array.</p>
+                            </div>
+                        </div>
+                        <!-- Depth First Search Card -->
+                        <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="ALG" data-alg="DFS">
+                            <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                                <img src="./images/dfs.png" alt="DFS Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=DFS';">
+                            </div>
+                            <div class="p-6">
+                                <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-route text-cyan-400"></i>Depth First Search</h2>
+                                <p class="text-slate-400 mt-2">Pre-order traversal simulation with highlighting.</p>
+                            </div>
+                        </div>
+                        <!-- Breadth First Search Card -->
+                        <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="ALG" data-alg="BFS">
+                            <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                                <img src="./images/bfs.png" alt="BFS Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=BFS';">
+                            </div>
+                            <div class="p-6">
+                                <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-arrows-split-up-and-left text-cyan-400"></i>Breadth First Search</h2>
+                                <p class="text-slate-400 mt-2">Level-order traversal simulation with highlighting.</p>
+                            </div>
+                        </div>
+                        <!-- Tree Traversals Card -->
+                        <div class="card glass-panel rounded-xl overflow-hidden cursor-pointer" data-type="ALG" data-alg="TRAVERSAL">
+                            <div class="relative h-48 bg-slate-700/50 flex items-center justify-center">
+                                <img src="./images/traversal.png" alt="Tree Traversal Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0f172a/e2e8f0?text=Traversals';">
+                            </div>
+                            <div class="p-6">
+                                <h2 class="text-3xl font-bold text-slate-100 flex items-center gap-3"><i class="fa-solid fa-shuffle text-cyan-400"></i>Tree Traversals</h2>
+                                <p class="text-slate-400 mt-2">Animate preorder, inorder, and postorder traversals.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Visualizer Page -->
+        <div id="visualizer-page" class="hidden h-screen flex flex-col">
+            <header class="glass-panel p-4 flex items-center justify-between sticky top-0 z-50 shrink-0">
+                <button id="back-btn" class="bg-slate-700/50 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                    <span class="sm:hidden"><i class="fa-solid fa-arrow-left"></i></span>
+                    <span class="hidden sm:inline"><i class="fa-solid fa-arrow-left"></i> Back to Home</span>
+                </button>
+                <div id="visualizer-title" class="text-xl md:text-3xl font-bold text-slate-100 flex items-center gap-3 absolute left-1/2 -translate-x-1/2 whitespace-nowrap"></div>
+                <button id="visualizer-info-btn" class="text-slate-300 hover:text-cyan-400 transition text-3xl pr-3">
+                    <i class="fa-solid fa-circle-question"></i>
+                </button>
+            </header>
+
+            <main class="flex-1 p-4 lg:p-6 flex flex-col lg:flex-row gap-6 overflow-hidden">
+                <!-- Controls Panel -->
+                <div class="w-full lg:w-80 glass-panel p-6 rounded-xl overflow-y-auto shrink-0">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center"><i class="fas fa-sliders-h mr-3 text-cyan-400"></i>Controls</h3>
+                    <div class="space-y-4">
+                        <!-- M-value input -->
+                        <div id="m-value-container" class="hidden">
+                            <label for="m-value-input" class="block text-sm font-medium text-slate-300">M Value (Max children per node)</label>
+                            <input type="number" id="m-value-input" min="2" max="10" value="3" class="mt-1 block w-full bg-slate-900/70 border border-slate-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 outline-none transition-all placeholder-slate-500">
+                            <p class="mt-1 text-xs text-slate-500">Choose between 2 and 10</p>
+                        </div>
+
+                        <!-- Graph controls -->
+                        <div id="graph-controls" class="hidden space-y-4">
+                            <!-- Directed/Undirected toggle -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Graph Type</label>
+                                <div class="flex gap-2">
+                                    <button id="undirected-btn" class="flex-1 bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-all text-sm">Undirected</button>
+                                    <button id="directed-btn" class="flex-1 bg-slate-700/80 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-lg transition-all text-sm">Directed</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Input format selector -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Input Format</label>
+                                <div class="flex gap-2">
+                                    <button id="edge-list-btn" class="flex-1 bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-all text-sm">Edge List</button>
+                                    <button id="adjacency-list-btn" class="flex-1 bg-slate-700/80 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-lg transition-all text-sm">Adjacency List</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="tree-input" class="block text-sm font-medium text-slate-300">Input</label>
+                            <p id="input-description" class="text-xs text-slate-400 mt-1 mb-2"></p>
+                            <textarea id="tree-input" rows="4" class="mt-1 block w-full bg-slate-900/70 border border-slate-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 outline-none transition-all placeholder-slate-500"></textarea>
+                            <p id="input-helper" class="mt-1 text-xs text-slate-500"></p>
+                        </div>
+                        <!-- Algorithm-only controls -->
+                        <div id="algo-target-container" class="hidden">
+                            <label for="algo-target-input" class="block text-sm font-medium text-slate-300">Target Value</label>
+                            <input type="number" id="algo-target-input" class="mt-1 block w-full bg-slate-900/70 border border-slate-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 outline-none transition-all placeholder-slate-500">
+                        </div>
+                        <!-- Traversal controls -->
+                        <div id="traversal-controls" class="hidden space-y-2">
+                            <label class="block text-sm font-medium text-slate-300">Traversal Order</label>
+                            <div class="flex gap-2 w-full">
+                                <button id="preorder-btn" class="flex-1 bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold py-1 px-2 rounded-md transition-all text-[11px]">Pre</button>
+                                <button id="inorder-btn" class="flex-1 bg-slate-700/80 hover:bg-slate-700 text-white font-bold py-1 px-2 rounded-md transition-all text-[11px]">In</button>
+                                <button id="postorder-btn" class="flex-1 bg-slate-700/80 hover:bg-slate-700 text-white font-bold py-1 px-2 rounded-md transition-all text-[11px]">Post</button>
+                            </div>
+                        </div>
+                        <button id="generate-default-array-btn" class="hidden w-full bg-purple-600/80 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-dice"></i> Generate Default
+                        </button>
+                        <button id="visualize-btn" class="w-full bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-play"></i> Visualize
+                        </button>
+                        <button id="balance-bst-btn" class="w-full bg-teal-600/80 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition-all hidden">
+                            Balance the Tree
+                        </button>
+                        <button id="generate-py-btn" class="w-full bg-slate-700/80 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-lg transition-all hidden">
+                            Generate Python Code
+                        </button>
+                        <button id="start-simulation-btn" class="hidden w-full bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-play"></i> Start Simulation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Canvas -->
+                <div id="canvas-container" class="flex-1 w-full glass-panel rounded-xl overflow-hidden relative">
+                    <svg id="canvas" width="100%" height="100%"></svg>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- About Modal -->
+    <div id="about-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-[1000] opacity-0 pointer-events-none">
+        <div class="glass-panel rounded-xl p-6 md:p-8 max-w-lg w-full mx-4">
+             <h2 class="text-xl md:text-2xl font-bold text-cyan-300 mb-4 flex items-center"><i class="fas fa-info-circle mr-3"></i>About This Visualizer</h2>
+             <p class="text-slate-300 mb-3 text-sm md:text-base">This interactive playground helps you learn data structures and algorithms by <strong>seeing</strong> them. Build and edit trees/graphs, simulate traversals and searches, and explore step-by-step animations.</p>
+             <ul class="list-disc list-inside text-slate-300 space-y-1 text-sm md:text-base mb-3">
+                 <li>Binary Tree & Binary Search Tree with live editing and balancing</li>
+                 <li>Trie visualization for strings</li>
+                 <li>M-ary Trees</li>
+                 <li>Graph editor with directed/undirected and edge/adjacency inputs</li>
+                 <li>Algorithms: Binary Search, DFS, BFS, and Tree Traversals</li>
+             </ul>
+             <p class="text-slate-300 mb-4 text-sm md:text-base">Use the top navigation to jump to sections, and share URLs (e.g. <code class="bg-slate-700/50 px-1 rounded">/binarytree</code>) to deep-link a visualizer.</p>
+             <button id="close-about-modal" class="py-2 px-4 bg-slate-700/80 hover:bg-slate-700 rounded-lg transition-all text-sm md:text-base">Close</button>
+        </div>
+    </div>
+
+    <!-- Data Structure Info Modal -->
+    <div id="ds-info-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-[1000] opacity-0 pointer-events-none">
+        <div class="glass-panel rounded-xl p-6 md:p-8 max-w-2xl w-full mx-4 max-h-[90vh] flex flex-col">
+             <h2 id="ds-info-title" class="text-xl md:text-2xl font-bold text-cyan-300 mb-4 flex items-center"></h2>
+             <div id="ds-info-content" class="text-slate-300 text-sm md:text-base space-y-4 overflow-y-auto">
+                <!-- Content will be injected by JS -->
+             </div>
+             <button id="close-ds-info-modal" class="mt-6 py-2 px-4 bg-slate-700/80 hover:bg-slate-700 rounded-lg transition-all text-sm md:text-base self-start">Close</button>
+        </div>
+    </div>
+    
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[2000] space-y-2"></div>
+
+    <!-- Python Code Modal -->
+    <div id="code-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 hidden z-[1000]">
+        <div class="glass-panel rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-slate-700/50">
+                <h3 class="text-lg font-semibold text-white flex items-center"><i class="fab fa-python mr-3 text-cyan-400"></i>Python Code Representation</h3>
+                <button id="close-modal-btn" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <div class="p-4 overflow-y-auto space-y-4">
+                <!-- Detailed Code Box -->
+                <div class="bg-slate-900/70 rounded-lg p-4 relative border border-slate-700/50">
+                    <h4 class="text-md font-semibold text-slate-300 mb-2">Detailed Representation</h4>
+                    <button id="copy-detailed-btn" class="absolute top-4 right-4 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-1 px-2 rounded">Copy</button>
+                    <pre><code id="python-code-detailed" class="text-sm text-slate-300"></code></pre>
+                </div>
+                <!-- One-Liner Code Box -->
+                <div class="bg-slate-900/70 rounded-lg p-4 relative border border-slate-700/50">
+                    <h4 class="text-md font-semibold text-slate-300 mb-2">One-Liner Representation</h4>
+                    <button id="copy-oneliner-btn" class="absolute top-4 right-4 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-1 px-2 rounded">Copy</button>
+                    <pre><code id="python-code-oneliner" class="text-sm text-slate-300"></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between text-slate-400 border-t border-slate-800">
+        <span class="text-sm">© 2025 Saifullah Bin Yusuf. All rights reserved.</span>
+        <div class="flex items-center gap-4 mt-3 sm:mt-0">
+            <a href="https://github.com/saifullahBUET144" target="_blank" class="hover:text-cyan-400 transition" aria-label="GitHub"><i class="fab fa-github fa-lg"></i></a>
+            <a href="https://www.linkedin.com/in/saifullah-bin-yusuf-3647b71a4/" target="_blank" class="hover:text-cyan-400 transition" aria-label="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
+            <a href="https://leetcode.com/u/saifullahbinyusuf/" target="_blank" class="hover:text-cyan-400 transition" aria-label="LeetCode"><i class="fa-solid fa-code"></i></a>
+            <a href="mailto:saifsearcher@gmail.com" class="hover:text-cyan-400 transition" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+    </footer>
+    <!-- Algorithm Step Modal -->
+    <div id="algo-step-modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center p-4 z-[1500]">
+        <div class="glass-panel rounded-lg shadow-xl w-full max-w-xl">
+            <div class="p-5 text-center">
+                <div id="algo-step-modal-content" class="text-slate-200 text-lg leading-relaxed"></div>
+                <div class="mt-5 flex justify-center">
+                    <button id="algo-step-modal-ok" class="hidden bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-all">OKAY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center p-4 z-[1600]">
+        <div class="glass-panel rounded-lg shadow-xl w-full max-w-lg">
+            <div class="p-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-cyan-400"></i>
+                    <input id="search-input" type="text" placeholder="Search data structures and algorithms..." class="flex-1 bg-slate-900/70 border border-slate-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 outline-none text-slate-200" />
+                    <button id="search-close-btn" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
+                </div>
+                <div id="search-results" class="mt-4 max-h-64 overflow-y-auto divide-y divide-slate-800"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Node Edit Modal (for Mobile) -->
+    <div id="node-edit-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 hidden z-[1000]">
+        <div class="glass-panel rounded-lg shadow-xl w-full max-w-xs flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-slate-700/50">
+                <h3 class="text-lg font-semibold text-white">Edit Node</h3>
+                <button id="close-node-modal-btn" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <div class="p-4 space-y-4">
+                <div>
+                    <label for="node-value-input" class="block text-sm font-medium text-slate-300 mb-2">Node Value</label>
+                    <input type="number" id="node-value-input" class="block w-full bg-slate-900/70 border border-slate-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-cyan-500 outline-none transition-all placeholder-slate-500">
+                </div>
+                <div id="node-actions-container" class="space-y-3">
+                    <div id="add-children-buttons" class="grid grid-cols-2 gap-3">
+                        <button id="add-left-child-btn" class="w-full bg-green-600/50 hover:bg-green-600/70 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"><i class="fas fa-plus"></i>Add Left</button>
+                        <button id="add-right-child-btn" class="w-full bg-green-600/50 hover:bg-green-600/70 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"><i class="fas fa-plus"></i>Add Right</button>
+                    </div>
+                    <button id="add-mary-child-btn" class="hidden w-full bg-green-600/50 hover:bg-green-600/70 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"><i class="fas fa-plus"></i>Add Child</button>
+                    <button id="delete-node-btn" class="w-full bg-red-600/80 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2"><i class="fas fa-trash"></i>Delete Node</button>
+                </div>
+                <button id="save-node-btn" class="w-full bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-all">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
+
