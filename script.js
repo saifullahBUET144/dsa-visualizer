@@ -375,25 +375,75 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputHelper.textContent = "Enter numbers separated by commas. e.g., 8, 3, 10, 1, 6, 14";
                 treeInput.placeholder = "e.g., 8, 3, 10, 1, 6, 14";
                 balanceBstBtn.classList.remove('hidden');
+                // Hook info button to BST info
+                visualizerInfoBtn.onclick = () => {
+                    const info = dsInfoData.BST;
+                    if (info) {
+                        dsInfoTitle.innerHTML = info.title;
+                        dsInfoContent.innerHTML = info.content;
+                        dsInfoModal.classList.remove('opacity-0', 'pointer-events-none');
+                        requestAnimationFrame(() => dsInfoModal.classList.add('show'));
+                    }
+                };
             } else if (currentTreeType === 'BT') {
                 inputDescription.textContent = 'Input is level-by-level order.';
                 inputHelper.textContent = "Enter numbers separated by commas. Use 'null' for empty nodes.";
                 treeInput.placeholder = "e.g., 1, 2, 3, null, 5";
+                // Hook info button to Binary Tree info
+                visualizerInfoBtn.onclick = () => {
+                    const info = dsInfoData.BT;
+                    if (info) {
+                        dsInfoTitle.innerHTML = info.title;
+                        dsInfoContent.innerHTML = info.content;
+                        dsInfoModal.classList.remove('opacity-0', 'pointer-events-none');
+                        requestAnimationFrame(() => dsInfoModal.classList.add('show'));
+                    }
+                };
             } else if (currentTreeType === 'TRIE') {
                 inputDescription.textContent = 'Input words to build the Trie.';
                 inputHelper.textContent = "Enter words separated by commas.";
                 treeInput.placeholder = "e.g., apple, app, apply";
+                // Hook info button to Trie info
+                visualizerInfoBtn.onclick = () => {
+                    const info = dsInfoData.TRIE;
+                    if (info) {
+                        dsInfoTitle.innerHTML = info.title;
+                        dsInfoContent.innerHTML = info.content;
+                        dsInfoModal.classList.remove('opacity-0', 'pointer-events-none');
+                        requestAnimationFrame(() => dsInfoModal.classList.add('show'));
+                    }
+                };
             } else if (currentTreeType === 'MARY') {
                 inputDescription.textContent = 'Input is level-by-level order for M-ary tree.';
                 inputHelper.textContent = "Enter numbers separated by commas. Use 'null' for empty nodes.";
                 treeInput.placeholder = "e.g., 1, 2, 3, 4, 5, 6, 7";
                 mValueContainer.classList.remove('hidden');
+                // Hook info button to M-ary Tree info
+                visualizerInfoBtn.onclick = () => {
+                    const info = dsInfoData.MARY;
+                    if (info) {
+                        dsInfoTitle.innerHTML = info.title;
+                        dsInfoContent.innerHTML = info.content;
+                        dsInfoModal.classList.remove('opacity-0', 'pointer-events-none');
+                        requestAnimationFrame(() => dsInfoModal.classList.add('show'));
+                    }
+                };
             } else if (currentTreeType === 'GRAPH') {
                 inputDescription.textContent = 'Input graph data in the selected format.';
                 inputHelper.textContent = "Choose input format above and enter graph data.";
                 treeInput.placeholder = "e.g., A-B, B-C, C-D, D-A";
                 graphControls.classList.remove('hidden');
                 updateGraphInputHelper();
+                // Hook info button to Graph info
+                visualizerInfoBtn.onclick = () => {
+                    const info = dsInfoData.GRAPH;
+                    if (info) {
+                        dsInfoTitle.innerHTML = info.title;
+                        dsInfoContent.innerHTML = info.content;
+                        dsInfoModal.classList.remove('opacity-0', 'pointer-events-none');
+                        requestAnimationFrame(() => dsInfoModal.classList.add('show'));
+                    }
+                };
             } else if (currentTreeType === 'ALG' && currentAlgorithm === 'BINARY_SEARCH') {
                 inputDescription.textContent = 'Input a sorted array.';
                 inputHelper.textContent = "Enter numbers separated by commas, or generate default.";
