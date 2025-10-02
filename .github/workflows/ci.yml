@@ -1,0 +1,99 @@
+name: CI/CD Pipeline
+
+# Triggers the workflow on push or pull request events for the main/master branches,
+# or when manually triggered from the Actions tab.
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  # Job 1: Build the project and run tests locally
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js v18
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    
+    - name: Run Playwright tests locally
+      run: npx playwright test --project=chromium
+
+    - name: Upload Playwright Report for Local Tests
+      if: always() # This step runs even if the tests fail
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report-local
+        path: playwright-report/
+        retention-days: 30
+
+  # Job 2: Deploy to Vercel (only runs if 'build-and-test' job succeeds)
+  deploy-to-vercel:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    outputs:
+      vercel-url: ${{ steps.deploy.outputs.url }} # Output the deployment URL for the next job
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        id: deploy
+        uses: vercel/vercel-action@v3
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
+  # Job 3: Run E2E tests on the Vercel deployment
+  e2e-tests-on-vercel:
+    needs: deploy-to-vercel # This job depends on the successful deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js v18
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    
+    - name: Run Playwright tests against Vercel deployment
+      env:
+        # Use the URL from the deployment job as the base URL for tests
+        BASE_URL: ${{ needs.deploy-to-vercel.outputs.vercel-url }}
+      run: npx playwright test
+
+    - name: Upload Playwright Report for Vercel Tests
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report-vercel
+        path: playwright-report/
+        retention-days: 30
