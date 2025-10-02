@@ -46,12 +46,12 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  # Job 2: Deploy to Vercel (runs if 'build-and-test' job succeeds)
+  # Job 2: Deploy to Vercel (only runs if 'build-and-test' job succeeds)
   deploy-to-vercel:
     needs: build-and-test
     runs-on: ubuntu-latest
     outputs:
-      vercel-url: ${{ steps.deploy.outputs.url }}
+      vercel-url: ${{ steps.deploy.outputs.preview-url }}
 
     steps:
       - name: Checkout code
@@ -59,12 +59,11 @@ jobs:
 
       - name: Deploy to Vercel
         id: deploy
-        uses: vercel/vercel-action@v3
+        uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
 
   # Job 3: Run E2E tests on the Vercel deployment
   e2e-tests-on-vercel:
