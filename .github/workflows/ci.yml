@@ -50,20 +50,19 @@ jobs:
   deploy-to-vercel:
     needs: build-and-test
     runs-on: ubuntu-latest
-    outputs:
-      vercel-url: ${{ steps.deploy.outputs.preview-url }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Vercel
+      - name: Deploy to Vercel as Production
         id: deploy
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-prod: true 
 
   # Job 3: Run E2E tests on the Vercel deployment
   e2e-tests-on-vercel:
@@ -89,7 +88,7 @@ jobs:
     
     - name: Run Playwright tests against Vercel deployment
       env:
-        BASE_URL: ${{ needs.deploy-to-vercel.outputs.vercel-url }}
+        BASE_URL: https://tree-graph-algorithm-visualizer.vercel.app
       run: npx playwright test
 
     - name: Upload Playwright Report for Vercel Tests
