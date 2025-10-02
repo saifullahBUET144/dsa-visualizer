@@ -1,0 +1,40 @@
+{
+  "name": "dsa_visualizer",
+  "version": "1.0.0",
+  "description": "An interactive, single‑page web app to learn data structures and algorithms by seeing them in action. Build and edit structures, simulate algorithms step‑by‑step, and deep‑link to any visualizer with clean URLs.",
+  "main": "script.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:vercel": "BASE_URL=https://tree-graph-algorithm-visualizer.vercel.app playwright test",
+    "test:report": "playwright show-report",
+    "serve": "http-server -p 8080 -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saifullahBUET144/dsa-visualizer.git"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "data-structures"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saifullahBUET144/dsa-visualizer/issues"
+  },
+  "homepage": "https://github.com/saifullahBUET144/dsa-visualizer#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "http-server": "^14.1.1"
+  }
+}
+
