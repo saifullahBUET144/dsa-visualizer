@@ -46,7 +46,7 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  # Job 2: Deploy to Vercel (only runs if 'build-and-test' job succeeds)
+  # Job 2: Deploy to Vercel (runs if 'build-and-test' job succeeds)
   deploy-to-vercel:
     needs: build-and-test
     runs-on: ubuntu-latest
